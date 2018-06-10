@@ -84,17 +84,24 @@ function createSnippet(text, lineNums) {
 
   let snippetLines = []
 
-  const allLines = text.split("\n")
+  let allLines = text.split("\n")
+
+  if (allLines[allLines.length-1].length === 0) {
+    allLines = allLines.slice(0, allLines.length-1)
+  }
+
   for (let i = 0; i < allLines.length; i++) {
     if (lineNums.includes(i+1)) {
       snippetLines.push(allLines[i])
     } else {
       // should throw in a comment
+      // except if the last line is a carriage return
       snippetLines.push("// ...")
     } 
   }
 
   snippetLines = removeContinuousDupEntries(snippetLines)
+  // console.log(snippetLines)
 
   let snippet = ""
 

@@ -32,12 +32,12 @@ output: "..."`
     })
 
 
-    const snippetToAppend = 
+    it("appends snippet", () => {
+      const snippetToAppend = 
 `entry: "...",
 output: "..."
 ignore this line`
 
-    it("appends snippet", () => {
       const result = createSnippet(snippetToAppend, [1, 2])
 
       expect(result).toEqual(
