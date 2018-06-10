@@ -2,29 +2,46 @@ const fs = require("fs")
 const path = require("path")
 const simpleGit = require("simple-git/promise")(__dirname)
 
-fs.readFile("./GUIDE.md", "utf8", async (err, lines) => {
+fs.readFile("./GUIDE.md", "utf8", async (err, data) => {
   const status = await simpleGit.status()
 
   if (err)
     throw err
 
-  for (line of lines.split("\n")) {
+  const lines = data.split("\n")
+  let output = ""
+
+  for (let i = 0; i <  lines.length; i++) {
+    const line = lines[i]
+
     if (line.substr(0, 3) === "//#") {
       const {branch, file, lineNumbers} = getSnippetDetails(line)
 
       try {
         const text = await show(branch, file)
         const snippet = createSnippet(text, lineNumbers)
-        console.log(snippet)
-
+        output = output + snippet
+        await writeFile("GUIDE.md", snippet)
       } catch (e) { 
         console.log(e)
       }
 
 
+    } else {
+      output = output + line + "\n"
     }
   }
+  writeFile("OUTPUT.md", output)
 })
+
+function writeFile(filename, content) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(path.join(__dirname, "output", filename), content, (err, res) => {
+      if (err) reject(err)
+      resolve(res)
+    })
+  })
+}
 
 function show(branch, file) {
   return simpleGit.show([`${branch}:${file}`])
@@ -65,5 +82,17 @@ function createSnippet(text, lineNums) {
     }
   }
 
-  return desiredLines
+  let indent = 100
+
+  for (line of desiredLines) {
+    const currLineIndent = /(\s*)/.exec(line)[1].length 
+    indent = Math.min(indent, currLineIndent)
+  }
+
+  let snippet = ""
+  for (line of desiredLines) {
+    snippet = snippet + line.substr(indent) + "\n"
+  }
+
+  return snippet
 }
