@@ -2,6 +2,8 @@ const fs = require("fs")
 const path = require("path")
 const simpleGit = require("simple-git/promise")(__dirname)
 
+const {removeContinuousDupEntries} = require("./utils")
+
 fs.readFile("./JAPANESE.md", "utf8", async (err, data) => {
   const status = await simpleGit.status()
 
@@ -15,7 +17,6 @@ fs.readFile("./JAPANESE.md", "utf8", async (err, data) => {
     const line = lines[i]
 
     if (line.substr(0, 3) === "//#") {
-      console.log("Parsing", line)
       const {branch, file, lineNumbers} = getSnippetDetails(line)
 
       try {
@@ -72,55 +73,50 @@ function processLineNums(lines) {
       }
     }
   }
-  console.log(numbers)
 
   return numbers
 }
 
 function createSnippet(text, lineNums) {
-  let linesToPrependComments = []
-  let linesToAppendComments = []
-  let snippet = ""
-
   if (!lineNums) {
-    lineNums = text.split("\n").map((_, idx) => idx+1)
+    return text
   }
+
+  let snippetLines = []
 
   const allLines = text.split("\n")
-
   for (let i = 0; i < allLines.length; i++) {
-    if (i === 0 && lineNums[0] !== 1) {
-      snippet = snippet + "// ...\n\n"
-    }
-
     if (lineNums.includes(i+1)) {
-      snippet = snippet + allLines[i]
+      snippetLines.push(allLines[i])
+    } else {
+      // should throw in a comment
+      snippetLines.push("// ...")
+    } 
+  }
 
-      // dont add newline to the end
-      if (lineNums.indexOf(i+1) !== lineNums.length-1) {
-        snippet = snippet + "\n"
+  snippetLines = removeContinuousDupEntries(snippetLines)
+
+  let snippet = ""
+
+  for (let i = 0; i < snippetLines.length; i++) {
+    const line = snippetLines[i]
+
+    if (line !== "// ...") {
+      snippet = snippet + line
+
+      if (i+1 < snippetLines.length) {
+        snippet += "\n"
       }
-
-      // append comment if last line of 
-      // snippet is not final line of entire file
-      if (i+1 === lineNums.length && 
-        lineNums[lineNums.length-1] !== allLines.length) {
-  snippet = snippet + "\n\n// ..."
-      }
-
+    } else {
+      const prewhitespace = /(\s*)/.exec(snippetLines[i-1])[1].length
+      const indent = new Array(prewhitespace).fill(" ").join("")
+      snippet = snippet + "\n" + indent + line + "\n\n"
     }
   }
 
-  let indent = 100
-
-    /*for (let i = 0; i < desiredLines.length; i++) {
-    const line = desiredLines[i]
-    const currLineIndent = /(\s*)/.exec(line)[1].length 
-    indent = Math.min(indent, currLineIndent)
-  }*/
-
-  return snippet
+  return snippet.trim()
 }
 
-
-module.exports = { createSnippet }
+module.exports = { 
+  createSnippet,
+}
