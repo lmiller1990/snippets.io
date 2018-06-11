@@ -1,4 +1,4 @@
-const { removeContinuousDupEntries } = require("../utils")
+const { removeContinuousDupEntries } = require("@/utils")
 
 
 describe('removeContinuousDupEntries', () => {

@@ -5,14 +5,16 @@ const util = require("util")
 const processArticle = require("./src/parse-article")
 
 const readFile = util.promisify(fs.readFile)
+const writeFile = util.promisify(fs.writeFile)
 
 async function main() {
   const filename = process.argv[2]
   try {
     const data = await readFile(path.join(__dirname, filename), "utf8")
 
-    const output = processArticle(data)
+    const output = await processArticle(data)
 
+    writeFile(path.join(__dirname, "resources", "GUIDE_PARSED.md"), output)
   } catch (err) {
     throw err
   }
@@ -74,24 +76,6 @@ function getSnippetDetails(line) {
   }
 }
 
-function processLineNums(lines) {
-  const numbers = []
-  const csv = lines.split(",")
-  for (val of csv) {
-    if (!val.includes("-")) {
-      numbers.push(parseInt(val))
-    } else {
-      // case of 3-6
-      const [start, end] = val.split("-")
-
-      for (let i = start; i <= end; i++) {
-        numbers.push(parseInt(i))
-      }
-    }
-  }
-
-  return numbers
-}
 
 */
 

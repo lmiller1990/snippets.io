@@ -1,5 +1,24 @@
 const simpleGit = require("simple-git/promise")(__dirname)
-const { removeContinuousDupEntries } = require("../utils")
+const { removeContinuousDupEntries } = require("./utils")
+
+function processLineNums(lines) {
+  const numbers = []
+  const csv = lines.split(",")
+  for (val of csv) {
+    if (!val.includes("-")) {
+      numbers.push(parseInt(val))
+    } else {
+      // case of 3-6
+      const [start, end] = val.split("-")
+
+      for (let i = start; i <= end; i++) {
+        numbers.push(parseInt(i))
+      }
+    }
+  }
+
+  return numbers
+}
 
 function getSnippetDetails(line) {
   const details = line.substr(4).split(":")
@@ -55,4 +74,7 @@ function parseSnippet(text, lineNums) {
   return snippet.trim()
 }
 
-module.exports = parseSnippet
+module.exports = { 
+  getSnippetDetails,
+  parseSnippet
+}

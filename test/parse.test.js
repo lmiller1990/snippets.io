@@ -1,4 +1,4 @@
-const { createSnippet } = require("../parse")
+const { parseSnippet } = require("@/parse-snippet")
 
 const context = (msg, cb) => describe(msg, cb)
 
@@ -11,12 +11,12 @@ const trimLeft = lines => {
   return str.trimRight()
 }
 
-describe("createSnippet", () => {
+describe("parseSnippet", () => {
   context("a complete snippet", () => {
     it("write the text as is", () => {
       const snippet = "{ a one line snippet }"
 
-      const result = createSnippet(snippet)
+      const result = parseSnippet(snippet)
 
       expect(result).toBe(snippet)
     })
@@ -30,7 +30,7 @@ describe("createSnippet", () => {
           entry: "...",
           output: "..."`)
 
-      const result = createSnippet(snipToPrependComment, [2,3])
+      const result = parseSnippet(snipToPrependComment, [2,3])
 
       expect(result).toEqual(
         trimLeft(
@@ -49,7 +49,7 @@ describe("createSnippet", () => {
         ignore this line`
       )
 
-      const result = createSnippet(snippetToAppend, [1, 2])
+      const result = parseSnippet(snippetToAppend, [1, 2])
 
       expect(result).toEqual(
         trimLeft(
@@ -70,7 +70,7 @@ describe("createSnippet", () => {
         }
         ignore this line`)
 
-      const result = createSnippet(snippet, [2,3,4])
+      const result = parseSnippet(snippet, [2,3,4])
 
       expect(result).toBe(
           trimLeft(
@@ -95,7 +95,7 @@ describe("createSnippet", () => {
 
           "output": "/dist/main.js"
         }`)
-      const result = createSnippet(snippet, [1,2,6,7])
+      const result = parseSnippet(snippet, [1,2,6,7])
 
       expect(result).toBe(trimLeft(
         `{

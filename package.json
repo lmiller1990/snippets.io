@@ -7,5 +7,11 @@
   },
   "scripts": {
     "test": "npx jest"
+  },
+  "jest": {
+    "modulePaths": ["<rootDir>/"],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }
