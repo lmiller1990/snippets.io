@@ -2,6 +2,15 @@ const { createSnippet } = require("../parse")
 
 const context = (msg, cb) => describe(msg, cb)
 
+const trimLeft = lines => {
+  let str = ""
+  for (let line of lines.split("\n")) {
+    str = str + line.trimLeft() + "\n"
+  }
+
+  return str.trimRight()
+}
+
 describe("createSnippet", () => {
   context("a complete snippet", () => {
     it("write the text as is", () => {
@@ -14,84 +23,88 @@ describe("createSnippet", () => {
   })
 
   context("not a complete snippet", () => {
-
     it("prepends comments", () => {
       const snipToPrependComment = 
-`ignore this line
-entry: "...",
-output: "..."`
+        trimLeft(
+          `ignore this line
+          entry: "...",
+          output: "..."`)
 
       const result = createSnippet(snipToPrependComment, [2,3])
 
       expect(result).toEqual(
-`// ...
+        trimLeft(
+          `// ...
 
-entry: "...",
-output: "..."`
+          entry: "...",
+          output: "..."`)
       )
     })
 
 
     it("appends snippet", () => {
-      const snippetToAppend = 
-`entry: "...",
-output: "..."
-ignore this line`
+      const snippetToAppend = trimLeft(
+        `entry: "...",
+        output: "..."
+        ignore this line`
+      )
 
       const result = createSnippet(snippetToAppend, [1, 2])
 
       expect(result).toEqual(
-`entry: "...",
-output: "..."
+        trimLeft(
+          `entry: "...",
+          output: "..."
 
-// ...`
+          // ...`)
       )
     })
   })
 
   context("a multiline block", () => {
     it("prepends and appends comments", () => {
-      const snippet = 
-`ignore this line
-{
-  "output": "/dist/main.js"
-}
-ignore this line`
+      const snippet = trimLeft(
+        `ignore this line
+        {
+          "output": "/dist/main.js"
+        }
+        ignore this line`)
 
       const result = createSnippet(snippet, [2,3,4])
 
       expect(result).toBe(
-`// ...
+          trimLeft(
+          `// ...
 
-{
-  "output": "/dist/main.js"
-}
+          {
+            "output": "/dist/main.js"
+          }
 
-// ...`
+          // ...`)
       )
     })
   })
 
   context("multiple seperate blocks", () => {
     it("prepends and appends comment before and after", () => {
-      const snippet =
-`{
-  "entry": "/src/index.js",
+      const snippet = trimLeft(
+        `{
+          "entry": "/src/index.js",
 
-  "something": "ignore",
+          "something": "ignore",
 
-  "output": "/dist/main.js"
-}`
+          "output": "/dist/main.js"
+        }`)
       const result = createSnippet(snippet, [1,2,6,7])
 
-      expect(result).toBe(
-`{
-  "entry": "/src/index.js",
+      expect(result).toBe(trimLeft(
+        `{
+          "entry": "/src/index.js",
 
-  // ...
+          // ...
 
-  "output": "/dist/main.js"
-}`
+          "output": "/dist/main.js"
+        }`)
       )
     })
   })

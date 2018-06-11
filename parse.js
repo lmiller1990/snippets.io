@@ -1,9 +1,25 @@
 const fs = require("fs")
 const path = require("path")
-const simpleGit = require("simple-git/promise")(__dirname)
+const util = require("util")
 
-const {removeContinuousDupEntries} = require("./utils")
+const processArticle = require("./src/parse-article")
 
+const readFile = util.promisify(fs.readFile)
+
+async function main() {
+  const filename = process.argv[2]
+  try {
+    const data = await readFile(path.join(__dirname, filename), "utf8")
+
+    const output = processArticle(data)
+
+  } catch (err) {
+    throw err
+  }
+}
+
+main()
+  /*
 fs.readFile("./JAPANESE.md", "utf8", async (err, data) => {
   const status = await simpleGit.status()
 
@@ -77,53 +93,5 @@ function processLineNums(lines) {
   return numbers
 }
 
-function createSnippet(text, lineNums) {
-  if (!lineNums) {
-    return text
-  }
+*/
 
-  let snippetLines = []
-
-  let allLines = text.split("\n")
-
-  if (allLines[allLines.length-1].length === 0) {
-    allLines = allLines.slice(0, allLines.length-1)
-  }
-
-  for (let i = 0; i < allLines.length; i++) {
-    if (lineNums.includes(i+1)) {
-      snippetLines.push(allLines[i])
-    } else {
-      // should throw in a comment
-      // except if the last line is a carriage return
-      snippetLines.push("// ...")
-    } 
-  }
-
-  snippetLines = removeContinuousDupEntries(snippetLines)
-  // console.log(snippetLines)
-
-  let snippet = ""
-
-  for (let i = 0; i < snippetLines.length; i++) {
-    const line = snippetLines[i]
-
-    if (line !== "// ...") {
-      snippet = snippet + line
-
-      if (i+1 < snippetLines.length) {
-        snippet += "\n"
-      }
-    } else {
-      const prewhitespace = /(\s*)/.exec(snippetLines[i-1])[1].length
-      const indent = new Array(prewhitespace).fill(" ").join("")
-      snippet = snippet + "\n" + indent + line + "\n\n"
-    }
-  }
-
-  return snippet.trim()
-}
-
-module.exports = { 
-  createSnippet,
-}
