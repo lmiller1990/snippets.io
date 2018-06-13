@@ -2,6 +2,16 @@
   "dependencies": {
     "jest": "^23.1.0",
     "jest-cli": "^23.1.0",
+    "minimist": "^1.2.0",
     "simple-git": "^1.96.0"
+  },
+  "scripts": {
+    "test": "npx jest"
+  },
+  "jest": {
+    "modulePaths": ["<rootDir>/"],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }
