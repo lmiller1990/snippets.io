@@ -5,7 +5,8 @@ const {
 const simpleGit = require("simple-git/promise")(__dirname)
 
 function show(branch, file) {
-  return simpleGit.show([`${branch}:${file}`])
+  const filename = file.split("?")[0]
+  return simpleGit.show([`${branch}:${filename}`])
 }
 
 async function processArticle(article) {
@@ -19,7 +20,9 @@ async function processArticle(article) {
       const {branch, file, lineNumbers} = getSnippetDetails(line)
 
       try {
+        console.log(branch, file, lineNumbers)
         const text = await show(branch, file)
+        console.log("text", text)
         const snippet = parseSnippet(text, lineNumbers)
         output = output + snippet
       } catch (e) { 

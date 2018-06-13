@@ -9,7 +9,9 @@
     "test": "npx jest"
   },
   "jest": {
-    "modulePaths": ["<rootDir>/"],
+    "modulePaths": [
+      "<rootDir>/"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
