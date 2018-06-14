@@ -2,15 +2,17 @@ const exec = require("child_process").exec
 const path = require("path")
 const fs = require("fs")
 
+const markdownWithHashSnippet =  ''
+
 const context = (msg, cb) => describe(msg, cb)
 
-const expected = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-hash-snippet", "expected-output.md"), "utf8")
+const expected = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-line-numbers-snippet", "expected-output.md"), "utf8")
 
 describe("integration tests", () => {
-  context("snippet by a commit hash", () => {
+  context("snippet from another branch", () => {
     it("outputs the correct markdown", (done) => {
       expect.assertions(1)
-      exec("node src/index.js ../resources/articles/article-with-hash-snippet/article.md",
+      exec("node src/index.js ../resources/articles/article-with-line-numbers-snippet/article.md",
         (err, stdout, stderr) => {
           if (err) {
             console.log(err)
@@ -21,7 +23,7 @@ describe("integration tests", () => {
             return
           }
 
-          const actual = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-hash-snippet", "actual.md"), "utf8")
+          const actual = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-line-numbers-snippet", "actual.md"), "utf8")
 
           expect(actual).toBe(expected)
           done()
