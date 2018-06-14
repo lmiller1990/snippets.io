@@ -2,8 +2,6 @@ const exec = require("child_process").exec
 const path = require("path")
 const fs = require("fs")
 
-const markdownWithHashSnippet =  ''
-
 const context = (msg, cb) => describe(msg, cb)
 
 const expected = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-hash-snippet", "expected-output.md"), "utf8")
