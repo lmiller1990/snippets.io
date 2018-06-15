@@ -5,6 +5,9 @@
     "minimist": "^1.2.0",
     "simple-git": "^1.96.0"
   },
+  "bin": {
+    "snippets": "src/index.js"
+  },
   "scripts": {
     "test": "npx jest"
   },
