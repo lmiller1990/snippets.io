@@ -6,7 +6,7 @@ const context = (msg, cb) => describe(msg, cb)
 
 const expected = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "articles", "article-with-hash-snippet", "expected-output.md"), "utf8")
 
-describe("integration tests", () => {
+xdescribe("integration tests", () => {
   context("snippet by a commit hash", () => {
     it("outputs the correct markdown", (done) => {
       expect.assertions(1)
