@@ -1,4 +1,9 @@
+const fs = require("fs")
 const { removeContinuousDupEntries } = require("./utils")
+
+Array.prototype.last = function() {
+  return this[this.length]
+}
 
 function snippetToArray(text, lineNums) {
   let snippetLines = []
@@ -7,7 +12,7 @@ function snippetToArray(text, lineNums) {
   // in the case there are no line numbers
   // the user wants to use the entire file as a snippet
   if (!lineNums) {
-    return text.split("\n")
+    return allLines
   }
 
   // else we should add comments for the lines the user did not specify
@@ -17,7 +22,9 @@ function snippetToArray(text, lineNums) {
     } else {
       // should throw in a comment
       // except if the last line is a carriage return
-      snippetLines.push("// ...")
+      if (i+1 !== allLines.length) {
+        snippetLines.push("// ...")
+      }
     } 
   }
 

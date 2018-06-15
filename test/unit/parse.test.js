@@ -56,7 +56,8 @@ describe("parseSnippet", () => {
           `entry: "...",
           output: "..."
 
-          // ...`)
+          // ...
+         `)
       )
     })
   })
