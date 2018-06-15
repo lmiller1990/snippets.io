@@ -1,5 +1,6 @@
 const simpleGit = require("simple-git/promise")(__dirname)
 const { removeContinuousDupEntries } = require("./utils")
+const { snippetToArray } = require("./snippet-to-array")
 
 function processLineNums(lines) {
   const numbers = []
@@ -30,28 +31,7 @@ function getSnippetDetails(line) {
 }
 
 function parseSnippet(text, lineNums) {
-  if (!lineNums) {
-    return text
-  }
-
-  let snippetLines = []
-  let allLines = text.split("\n")
-
-  if (allLines[allLines.length-1].length === 0) {
-    allLines = allLines.slice(0, allLines.length-1)
-  }
-
-  for (let i = 0; i < allLines.length; i++) {
-    if (lineNums.includes(i+1)) {
-      snippetLines.push(allLines[i])
-    } else {
-      // should throw in a comment
-      // except if the last line is a carriage return
-      snippetLines.push("// ...")
-    } 
-  }
-
-  snippetLines = removeContinuousDupEntries(snippetLines)
+  const snippetLines = snippetToArray(text, lineNums)
 
   let snippet = ""
 
