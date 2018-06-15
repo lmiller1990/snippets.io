@@ -12,11 +12,11 @@ async function main() {
   const filename = path.basename(file)
   const outputPath = file.replace(filename, "actual.md")
   try {
-    const data = await readFile(path.join(__dirname, file), "utf8")
+    const data = await readFile(path.join(__dirname, "..", file), "utf8")
 
     const output = await parseArticle(data)
 
-    await writeFile(path.join(__dirname, outputPath), output)
+    await writeFile(path.join(__dirname, "..", outputPath), output)
   } catch (err) {
     throw err
   }
