@@ -10,13 +10,15 @@ const writeFile = util.promisify(fs.writeFile)
 async function main() {
   const file = process.argv[2]
   const filename = path.basename(file)
-  const outputPath = file.replace(filename, "actual.md")
+  console.log(file, filename)
+  // const outputPath = file.replace(filename, "actual.md")
   try {
-    const data = await readFile(path.join(__dirname, "..", file), "utf8")
+    const data = await readFile(`../${file}`, "utf8")
+    // path.join("..", file), "utf8")
 
     const output = await parseArticle(data)
 
-    await writeFile(path.join(__dirname, "..", outputPath), output)
+    await writeFile(path.join("..", outputPath), output)
   } catch (err) {
     throw err
   }
