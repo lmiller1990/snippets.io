@@ -32,6 +32,7 @@ describe("parseSnippet", () => {
 
           "output": "/dist/main.js"
         }`)
+
       const result = parseSnippet(snippet, [1,2,6,7])
 
       expect(result).toBe(trimLeft(

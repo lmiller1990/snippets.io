@@ -22,7 +22,7 @@ async function processArticle(article) {
       try {
         const text = await show(branch, file)
         const snippet = parseSnippet(text, lineNumbers)
-        output = output + snippet
+        output = output + "```\n" + snippet + "\n```\n"
       } catch (e) { 
         console.log("Error", e)
       }
