@@ -28,10 +28,8 @@ My webpack config:
 //# master:webpack.config.js
 ```
 
-And generate the output file by runinng `snippets README.me`. This produces:
+And generate the output file by runinng `snippets README.md`. This inserts the following snippet:
 
-``` 
-My webpack config:
 
 ```js
 const path = require("path")
@@ -39,7 +37,6 @@ const path = require("path")
 module.exports = {
   entry: "./src/index.js"
 }
-```
 ```
 
 Snippets uses git to checkout files, so the code you are referencing needs to be checked into git.
@@ -61,16 +58,11 @@ You can specify which lines you want to use in your snippet like this:
 Which generates:
 
 ```js
-My webpack config
-
-
-```js
 const path = require("path")
 
 module.exports = {
   // ...
 }
-```
 ```
 
 Automatically inserting `// ...` to lines excluded from the snippet.
