@@ -17,12 +17,12 @@ async function processArticle(article) {
     const line = lines[i]
 
     if (line.substr(0, 3) === "//#") {
-      const {branch, file, lineNumbers} = getSnippetDetails(line)
+      const {branch, file, lineNumbers, fileExt} = getSnippetDetails(line)
 
       try {
         const text = await show(branch, file)
         const snippet = parseSnippet(text, lineNumbers)
-        output = output + "```\n" + snippet + "\n```\n"
+        output = output + "```" + fileExt + "\n" + snippet + "\n```\n"
       } catch (e) { 
         console.log("Error", e)
       }

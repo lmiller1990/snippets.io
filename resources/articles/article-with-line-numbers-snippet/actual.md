@@ -1,6 +1,6 @@
 Inside of `webpack.config.js`, update the `module.exports` object as such:
 
-```
+```js
 // ...
 
 module.exports = {

@@ -26,8 +26,18 @@ function getSnippetDetails(line) {
   return {
     branch: details[0],
     file: details[1],
+    fileExt: getFileExt(details[1]),
     lineNumbers: details[2] ? processLineNums(details[2]) : null
   }
+}
+
+
+function getFileExt(file) {
+  // ignore hash param if present
+  let arr = file.split("?")[0]
+
+  arr = arr.split(".")
+  return arr[arr.length-1]
 }
 
 function parseSnippet(text, lineNums) {
