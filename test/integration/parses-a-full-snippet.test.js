@@ -7,7 +7,7 @@ const expected = fs.readFileSync(path.join(__dirname, "..", "..", "resources", "
 describe("integration tests", () => {
   it("outputs the correct markdown", (done) => {
     expect.assertions(1)
-    exec("node src/index.js ../resources/articles/article-with-full-snippet/article.md",
+    exec("node src/index.js resources/articles/article-with-full-snippet/article.md",
       (err, stdout, stderr) => {
         if (err) {
           console.log(err)

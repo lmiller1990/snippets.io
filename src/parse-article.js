@@ -2,7 +2,7 @@ const {
   getSnippetDetails, 
   parseSnippet
 } = require("./parse-snippet")
-const simpleGit = require("simple-git/promise")(__dirname)
+const simpleGit = require("simple-git/promise")(process.cwd())
 
 function show(branch, file) {
   const filename = file.split("?")[0]

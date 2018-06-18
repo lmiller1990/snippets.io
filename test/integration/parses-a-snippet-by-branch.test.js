@@ -12,7 +12,7 @@ describe("integration tests", () => {
   context("snippet from another branch", () => {
     it("outputs the correct markdown", (done) => {
       expect.assertions(1)
-      exec("node src/index.js ../resources/articles/article-with-line-numbers-snippet/article.md",
+      exec("node src/index.js resources/articles/article-with-line-numbers-snippet/article.md",
         (err, stdout, stderr) => {
           if (err) {
             console.log(err)
