@@ -36,13 +36,20 @@ snippets README.md
 
 The writes `README.md` to `actual.md`, and instead of the `//#` comment, the referenced code is inserted as such:
 
-```js
+```
+
+My webpack config:
+
+`` `js
 const path = require("path")
 
 module.exports = {
   entry: "./src/index.js"
 }
+`` `
 ```
+
+Now you can write blogpost and readmes without having incorrecty code snippets, since the actual snippets are taking directly from your the repository code. 
 
 `snippets` uses `git` to checkout files, so the code you are referencing needs to be checked into your git repository.
 
