@@ -37,7 +37,6 @@ snippets README.md
 The writes `README.md` to `actual.md`, and instead of the `//#` comment, the referenced code is inserted as such:
 
 ```
-
 My webpack config:
 
 `` `js
