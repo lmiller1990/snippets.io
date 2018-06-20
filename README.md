@@ -2,6 +2,14 @@
 
 Easily insert source code into documentation.
 
+## Quick Explanation
+
+Snippets is a CLI tool to help keep your documentation and blog posts accurate by inserting code snippets from the actual repository.
+
+The left side is what you write. The right side is what is generated automatically:
+
+![](https://github.com/lmiller1990/snippets.io/blob/master/images/demo.png?raw=true)
+
 ### Installation
 
 ```
@@ -10,47 +18,54 @@ npm install -g @lmiller1990/snippets
 
 ### Usage
 
-Let's say we are writing some documentation about webpack. We want to reference our file, `webpack.config.js`, in our documentation. It looks like this:
+Let's say we are writing some documentation about an imaginary Node.js framework. We want to reference our file, `controllers/user.js`, in our documentation. It looks like this:
 
 ```js
-const path = require("path")
+class UsersController {
+  constructor() {
+  }
 
-module.exports = {
-  entry: "./src/index.js"
+  index() {
+  }
 }
 ```
 
-In this example, the source file is `README.md`. You can insert this into any file by using the following syntax:
+We are writing some documentation about how to add new controller actions. Let's teach the user to add a `show` action. 
+
+Using snippets, we can write:
 
 ```
-My webpack config:
+Add a `show` method to `controllers/users.js`.
 
-//# master:webpack.config.js
+You code should now look like:
+
+//# master:controllers/users.js:1-3,8,9,10
 ```
 
-And generate the output file by runinng:
+We commit out changes, and run `snippets README.md`. This generates:
 
-```
-snippets README.md
-```
 
-The writes `README.md` to `actual.md`, and instead of the `//#` comment, the referenced code is inserted as such:
+````
+Add a `show` method to `controllers/users.js`.
 
-```
-My webpack config:
+You code should now look like:
 
-`` `js
-const path = require("path")
+```js
+class UsersController {
+  constructor() {
+  }
 
-module.exports = {
-  entry: "./src/index.js"
+  // ...
+
+  show() {
+  }
 }
-`` `
 ```
+````
 
-Now you can write blogpost and readmes without having incorrecty code snippets, since the actual snippets are taking directly from your the repository code. 
+Any irrelevant lines are replaced with a `// ...` comment. Now you can easily and accurately include code samples in your blog post or documentation.
 
-`snippets` uses `git` to checkout files, so the code you are referencing needs to be checked into your git repository.
+Note, `snippets` uses `git` to checkout files, so the code you are referencing needs to be checked into your git repository.
 
 ### Options
 
@@ -60,26 +75,14 @@ Formally, the full syntax is:
 //# [branch]:[file]:[lines]?[commit hash]
 ```
 
-You can specify which lines you want to use in your snippet like this:
+A full example using all options would look like:
 
-```
-//# master:webpack.config.js:1-3,5
-```
+`//# master:controllers/users.js:1,2,3-6?ed53d197dac5da4a4a38a65bd7231b32fedaa6b1`.
 
-Which generates:
+### TODO
 
-```js
-const path = require("path")
-
-module.exports = {
-  // ...
-}
-```
-
-Automatically inserting `// ...` to lines excluded from the snippet.
-
-You can also specify a hash:
-
-```
-//# master:resources/webpack.config.js?ed53d197dac5da4a4a38a65bd7231b32fedaa6b1
-```
+- [ ] correct comment based on snippet language
+- [ ] landing page
+- [ ] more examples/better documentation
+- [ ] contributing guide
+- [ ] simple blogging website with markdown UI, snippets backend
