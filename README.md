@@ -28,18 +28,29 @@ My webpack config:
 //# master:webpack.config.js
 ```
 
-And generate the output file by runinng `snippets README.md`. This inserts the following snippet:
+And generate the output file by runinng:
 
+```
+snippets README.md
+```
 
-```js
+The writes `README.md` to `actual.md`, and instead of the `//#` comment, the referenced code is inserted as such:
+
+```
+My webpack config:
+
+`` `js
 const path = require("path")
 
 module.exports = {
   entry: "./src/index.js"
 }
+`` `
 ```
 
-Snippets uses git to checkout files, so the code you are referencing needs to be checked into git.
+Now you can write blogpost and readmes without having incorrecty code snippets, since the actual snippets are taking directly from your the repository code. 
+
+`snippets` uses `git` to checkout files, so the code you are referencing needs to be checked into your git repository.
 
 ### Options
 
