@@ -28,8 +28,13 @@ My webpack config:
 //# master:webpack.config.js
 ```
 
-And generate the output file by runinng `snippets README.md`. This inserts the following snippet:
+And generate the output file by runinng:
 
+```
+snippets README.md
+```
+
+The writes `README.md` to `actual.md`, and instead of the `//#` comment, the referenced code is inserted as such:
 
 ```js
 const path = require("path")
@@ -39,7 +44,7 @@ module.exports = {
 }
 ```
 
-Snippets uses git to checkout files, so the code you are referencing needs to be checked into git.
+`snippets` uses `git` to checkout files, so the code you are referencing needs to be checked into your git repository.
 
 ### Options
 
