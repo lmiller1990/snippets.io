@@ -27,10 +27,20 @@ function getSnippetDetails(line) {
     branch: details[0],
     file: details[1],
     fileExt: getFileExt(details[1]),
-    lineNumbers: details[2] ? processLineNums(details[2]) : null
+    lineNumbers: details[2] ? processLineNums(details[2]) : null,
+    hash: getHash(details)
   }
 }
 
+
+function getHash(details) {
+  const str = details.join("")
+  if (!str.includes("?")) {
+    return null
+  }
+
+  return str.split("?")[1]
+}
 
 function getFileExt(file) {
   // ignore hash param if present

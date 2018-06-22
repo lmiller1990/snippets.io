@@ -4,8 +4,11 @@ const {
 } = require("./parse-snippet")
 const simpleGit = require("simple-git/promise")(process.cwd())
 
-function show(branch, file) {
+function show(branch, hash, file) {
   const filename = file.split("?")[0]
+  if (hash) {
+    return simpleGit.show([`${hash}:${filename}`])
+  }
   return simpleGit.show([`${branch}:${filename}`])
 }
 
@@ -17,10 +20,10 @@ async function processArticle(article) {
     const line = lines[i]
 
     if (line.substr(0, 3) === "//#") {
-      const {branch, file, lineNumbers, fileExt} = getSnippetDetails(line)
+      const {branch, file, hash, lineNumbers, fileExt} = getSnippetDetails(line)
 
       try {
-        const text = await show(branch, file)
+        const text = await show(branch, hash, file)
         const snippet = parseSnippet(text, lineNumbers)
         output = output + "```" + fileExt + "\n" + snippet + "\n```\n"
       } catch (e) { 
